@@ -41,31 +41,94 @@ import net.sf.okapi.steps.rainbowkit.creation.ExtractionStep;
 import net.sf.okapi.steps.rainbowkit.creation.Parameters;
 import net.sf.okapi.steps.rainbowkit.postprocess.MergingStep;
 
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.DefaultParser;
+import org.apache.commons.cli.HelpFormatter;
+import org.apache.commons.cli.Options;
+import org.apache.commons.cli.ParseException;
+
 public class Main {
 
-	static LocaleId locEN = LocaleId.ENGLISH;
-	static LocaleId locFR = LocaleId.fromString("fr");
-	static String root;
+	protected static LocaleId locale_source; // = LocaleId.ENGLISH;
+	protected static LocaleId locale_target; // = LocaleId.fromString("fr");
+	protected static String root;
+	protected static String action;
+	protected static String encoding_input;
+	protected static String encoding_output;
+	protected static String filter;
+	protected static String filter_config;
+	protected static String file_path;
 
 	public static void main(String[] args) throws URISyntaxException {
+
+		// create Options object
+		Options options = new Options();
+
+		options.addOption("f", true, "input file path.");
+		options.addOption("a", true, "Action. Turn on extract (e), merge (m), translate (t)");
+		options.addOption("ie", false, "input encoding");
+		options.addOption("oe", false, "output encoding");
+		options.addOption("il", true, "input locale");
+		options.addOption("ol", true, "output locale");
+		options.addOption("fi", false, "filter");
+		options.addOption("fc", false, "filter config");
+		options.addOption("h", "help", false, "print this help");
 		// URL inputUrl = Main.class.getResource("myDoc.docx");
 
-		File inputFile = new File(args[0]);
-		root = inputFile.getParent();
+		// create the command line parser
+		CommandLineParser parser = new DefaultParser();
 
-		// Extract and XLIFF2 t-kit in a 'pack1' sub-directory in the directory of the
-		// input file
-		extract(inputFile);
+		try {
+			// parse the command line arguments
+			CommandLine cmd = parser.parse(options, args);
+			file_path = cmd.getOptionValue("f");
+			action = cmd.getOptionValue("a");
+			encoding_input = cmd.getOptionValue("ie");
+			encoding_output = cmd.getOptionValue("oe");
+			locale_source = LocaleId.fromString(cmd.getOptionValue("il"));
+			locale_target = LocaleId.fromString(cmd.getOptionValue("ol"));
+			filter = cmd.getOptionValue("fi");
+			filter_config = cmd.getOptionValue("fc");
 
-		// Make some change in the extracted file
-		File xliffFile = new File(root + File.separator + "pack1" + File.separator + "work" + File.separator
-				+ inputFile.getName() + ".xlf");
-		modifyXLIFF(xliffFile);
+			if (cmd.hasOption("h")) {
+				printUsage(options);
+				return;
+			}
 
-		// Merge the XLIFF2 file back
-		// Result goes to the 'done' sub-directory of the 'pack1' directory
-		File manifestFile = new File(root + File.separator + "pack1" + File.separator + "manifest.rkm");
-		merge(manifestFile);
+			File inputFile = new File(file_path);
+			root = inputFile.getParent();
+
+			if (action.equals("e")) {
+				// Extract and XLIFF2 t-kit in a 'pack1' sub-directory in the directory of the
+				// input file
+				extract(inputFile);
+			} else if (action.equals("t")) {
+				// Make some change in the extracted file
+				File xliffFile = new File(root + File.separator + "pack1" + File.separator + "work" + File.separator
+						+ inputFile.getName() + ".xlf");
+				modifyXLIFF(xliffFile);
+			} else if (action.equals("m")) {
+				// Merge the XLIFF2 file back
+				// Result goes to the 'done' sub-directory of the 'pack1' directory
+				File manifestFile = new File(root + File.separator + "pack1" + File.separator + "manifest.rkm");
+				merge(manifestFile);
+			}
+
+			return;
+
+		} catch (ParseException exp) {
+			// oops, something went wrong
+			System.err.println("Parsing failed.  Reason: " + exp.getMessage());
+			printUsage(options);
+			return;
+		}
+
+	}
+
+	private static void printUsage(Options options) {
+		final HelpFormatter formatter = new HelpFormatter();
+		formatter.printHelp("java -jar okap--genesis-tools.jar", options);
 	}
 
 	private static void extract(File inputFile) {
@@ -82,7 +145,8 @@ public class Main {
 			driver.addStep(extStep);
 
 			// Add the input file to the driver
-			RawDocument rawDoc = new RawDocument(inputFile.toURI(), "UTF-8", locEN, locFR, "okf_openxml");
+			RawDocument rawDoc = new RawDocument(inputFile.toURI(), "UTF-8", locale_source, locale_target,
+					"okf_openxml");
 			// Set the output information (it goes in the manifest)
 			String path = inputFile.getAbsolutePath();
 			String outputPath = Util.getDirectoryName(path) + File.separator + Util.getFilename(path, false) + ".out"
@@ -134,7 +198,7 @@ public class Main {
 			driver.addStep(new MergingStep());
 
 			// Add the input file (manifest file) to the driver
-			RawDocument rawDoc = new RawDocument(manifestFile.toURI(), "UTF-8", locEN, locFR,
+			RawDocument rawDoc = new RawDocument(manifestFile.toURI(), "UTF-8", locale_source, locale_target,
 					"okf_rainbowkit-noprompt");
 			driver.addBatchItem(rawDoc);
 			// Run the pipeline
