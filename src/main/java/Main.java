@@ -50,8 +50,8 @@ import org.apache.commons.cli.ParseException;
 
 public class Main {
 
-	protected static LocaleId locale_source; // = LocaleId.ENGLISH;
-	protected static LocaleId locale_target; // = LocaleId.fromString("fr");
+	protected static LocaleId locale_source = LocaleId.ENGLISH;
+	protected static LocaleId locale_target = LocaleId.fromString("fr");
 	protected static String root;
 	protected static String action;
 	protected static String encoding_input;
@@ -86,8 +86,8 @@ public class Main {
 			action = cmd.getOptionValue("a");
 			encoding_input = cmd.getOptionValue("ie");
 			encoding_output = cmd.getOptionValue("oe");
-			locale_source = LocaleId.fromString(cmd.getOptionValue("il"));
-			locale_target = LocaleId.fromString(cmd.getOptionValue("ol"));
+			// locale_source = LocaleId.fromString(cmd.getOptionValue("il"));
+			// locale_target = LocaleId.fromString(cmd.getOptionValue("ol"));
 			filter = cmd.getOptionValue("fi");
 			filter_config = cmd.getOptionValue("fc");
 
@@ -95,6 +95,8 @@ public class Main {
 				printUsage(options);
 				return;
 			}
+
+			System.out.println("file: " + file_path);
 
 			File inputFile = new File(file_path);
 			root = inputFile.getParent();

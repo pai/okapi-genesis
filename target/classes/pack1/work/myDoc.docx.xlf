@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<xliff xmlns="urn:oasis:names:tc:xliff:document:2.0" version="2.0" srcLang="en" trgLang="fr" xmlns:its="http://www.w3.org/2005/11/its" xmlns:itsxlf="http://www.w3.org/ns/its-xliff/" its:version="2.0">
+<file id="f1" original="word/document.xml">
+<unit id="NFDBB2FA9-tu1">
+<segment>
+<source xml:space="preserve">Example file</source>
+<target xml:space="preserve">Example file blah blah...</target>
+</segment>
+</unit>
+<unit id="NFDBB2FA9-tu2">
+<segment>
+<source xml:space="preserve">This is an example</source>
+<target xml:space="preserve">This is an example blah blah...</target>
+</segment>
+</unit>
+<unit id="NFDBB2FA9-tu3">
+<segment>
+<source xml:space="preserve">With some text:</source>
+<target xml:space="preserve">With some text: blah blah...</target>
+</segment>
+</unit>
+<unit id="NFDBB2FA9-tu4">
+<originalData>
+<data id="d1">&lt;run1></data>
+<data id="d2">&lt;run2></data>
+<data id="d3">&lt;/run2></data>
+<data id="d4">&lt;run3></data>
+<data id="d5">&lt;/run3></data>
+<data id="d6">&lt;/run1></data>
+</originalData>
+<segment>
+<source xml:space="preserve"><pc id="1" canCopy="no" canDelete="no" dataRefEnd="d6" dataRefStart="d1">Tolsa (<pc id="2" canCopy="no" canDelete="no" dataRefEnd="d3" dataRefStart="d2">Finnish</pc>) or Tolls (<pc id="3" canCopy="no" canDelete="no" dataRefEnd="d5" dataRefStart="d4">Swedish</pc>) is a station (actually only a halt) on the VR commuter rail network located in the town of Kirkkonummi, Finland, between the Jorvas and Kirkkonummi stations. The station has a platform path with an overpass warning signal. The Tolsa station has two tracks, with track one serving trains towards Kirkkonummi and track two towards Helsinki.</pc></source>
+<target xml:space="preserve"><pc id="1" canCopy="no" canDelete="no" dataRefEnd="d6" dataRefStart="d1">Tolsa (<pc id="2" canCopy="no" canDelete="no" dataRefEnd="d3" dataRefStart="d2">Finnish</pc>) or Tolls (<pc id="3" canCopy="no" canDelete="no" dataRefEnd="d5" dataRefStart="d4">Swedish</pc>) is a station (actually only a halt) on the VR commuter rail network located in the town of Kirkkonummi, Finland, between the Jorvas and Kirkkonummi stations. The station has a platform path with an overpass warning signal. The Tolsa station has two tracks, with track one serving trains towards Kirkkonummi and track two towards Helsinki.</pc> blah blah...</target>
+</segment>
+</unit>
+<unit id="NFDBB2FA9-tu5">
+<originalData>
+<data id="d1">&lt;run1></data>
+<data id="d2">&lt;/run1></data>
+</originalData>
+<segment>
+<source xml:space="preserve"><pc id="1" canCopy="no" canDelete="no" dataRefEnd="d2" dataRefStart="d1">Trains going to tracks 2 or 3 in Kirkkonummi go via track two.</pc></source>
+<target xml:space="preserve"><pc id="1" canCopy="no" canDelete="no" dataRefEnd="d2" dataRefStart="d1">Trains going to tracks 2 or 3 in Kirkkonummi go via track two.</pc> blah blah...</target>
+</segment>
+</unit>
+</file>
+<file id="f2" original="docProps/core.xml">
+<unit id="tu1">
+<segment>
+<source xml:space="preserve">Yves Savourel</source>
+<target xml:space="preserve">Yves Savourel blah blah...</target>
+</segment>
+</unit>
+</file>
+</xliff>
